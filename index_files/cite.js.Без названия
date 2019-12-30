@@ -1,0 +1,24 @@
+function CiteOMat(cites)
+{
+		this.cites = cites;
+		this.activeIndex = 0;
+		
+		this.activateNextCite = function()
+		{
+			this.activeIndex = this.activeIndex + 1 >= this.cites.length ? 0 : this.activeIndex + 1;
+			
+			jQuery(this.cites).css('display', 'none');
+			jQuery(this.cites[this.activeIndex]).css('display', 'block');
+			
+		}
+}
+
+jQuery(document).ready(function(){
+	jQuery('.cite-o-mat').each(function(){
+		var cites = jQuery('.cite', jQuery(this));
+		var btn = jQuery('button', jQuery(this));
+		
+		var citeObj = new CiteOMat(cites);
+		btn.bind('click', {citeOMat: citeObj}, function(event){ event.data.citeOMat.activateNextCite() });
+	});
+});

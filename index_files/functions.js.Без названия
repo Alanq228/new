@@ -1,0 +1,89 @@
+/**
+ * Functionality specific to Planet Interview, based on Twentythirteen.
+ *
+ * Provides helper functions to enhance the theme experience.
+ */
+
+( function( $ ) {
+    var body    = $( 'body' ),
+        _window = $( window );
+
+    var menuIcon = $('<span class="toggle toggle-menu"><i class="icon-reorder"></i></span>');
+    var searchIcon = $('<span class="toggle toggle-search"><i class="icon-search"></i></span>');
+    $('#site-navigation').prepend(menuIcon, searchIcon);
+
+    /**
+     * Enables menu toggle for small screens.
+     */
+    ( function() {
+        var nav = $( '#site-navigation' ), button, menu;
+        if ( ! nav )
+            return;
+
+        var search = $( '#searchform'), searchButton;
+        if ( ! search )
+            return;
+
+        button = nav.find( '.toggle-menu' );
+        if ( ! button )
+            return;
+
+        searchButton = search.find( '.toggle-search' );
+        if ( ! searchButton )
+            return;
+
+        $( '.toggle-menu' ).on( 'click.planetinterview', function() {
+            nav.find('> div').toggleClass( 'toggled-on' );
+            search.removeClass('toggled-on');
+
+            checkToggled(search, nav);
+        } );
+
+        $( '.toggle-search' ).on( 'click.planetinterview', function() {
+            search.toggleClass( 'toggled-on' );
+            nav.find('> div').removeClass('toggled-on');
+
+            checkToggled(search, nav);
+        } );
+
+        function checkToggled(search, nav)
+        {
+            if (search.hasClass('toggled-on') || nav.find('div').hasClass('toggled-on'))
+            {
+                nav.addClass('toggled-on');
+            } else {
+                nav.removeClass('toggled-on');
+            }
+        }
+    } )();
+
+	/**
+	 * Makes "skip to content" link work correctly in IE9 and Chrome for better
+	 * accessibility.
+	 *
+	 * @link http://www.nczonline.net/blog/2013/01/15/fixing-skip-to-content-links/
+	 */
+	_window.on( 'hashchange.planetinterview', function() {
+		var element = document.getElementById( location.hash.substring( 1 ) );
+
+		if ( element ) {
+			if ( ! /^(?:a|select|input|button|textarea)$/i.test( element.tagName ) )
+				element.tabIndex = -1;
+
+			element.focus();
+		}
+	} );
+
+
+    /**
+     * Tooltip
+     *
+     * @link http://jqueryui.com/tooltip/
+     */
+
+    $('a').not('.phone a, .tablet a, .banner a').tooltip({
+        track: true,
+        position: { my: "left-30 bottom-10", at: "right center" }
+    });
+
+} )( jQuery );
